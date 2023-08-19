@@ -12,33 +12,42 @@ const puzzleStrings = require("../controllers/puzzle-strings");
 
 suite("Unit Tests", () => {
   suite("Sudoku Solver", () => {
-    test("validate Method", () => {
+    test("validate Method valid", () => {
       assert.equal(solver.validate(puzzleStrings[0][0]), "VALID");
+    });
+
+    test("validate Method incorrect lenght", () => {
       assert.equal(
         solver.validate(toShortPuzzleString),
         "Expected puzzle to be 81 characters long"
       );
+    });
+
+    test("validate Method incorrect char", () => {
       assert.equal(
         solver.validate(invalidPuzzleString),
         "Invalid characters in puzzle"
       );
     });
 
-    test("checkRowPlacement Method", () => {
+    test("checkRowPlacement Method valid", () => {
       assert.isTrue(
         solver.checkRowPlacement(puzzleStrings[0][0], "A", "2", "9")
       );
       assert.isTrue(
         solver.checkRowPlacement(puzzleStrings[0][0], "A", "1", "1")
       );
+      assert.isTrue(
+        solver.checkRowPlacement(puzzleStrings[0][0], "e", "4", "1")
+      );
+    });
+
+    test("checkRowPlacement Method invalid", () => {
       assert.isFalse(
         solver.checkRowPlacement(puzzleStrings[0][0], "a", "1", "9")
       );
       assert.isFalse(
         solver.checkRowPlacement(puzzleStrings[0][0], "a", "4", "5")
-      );
-      assert.isTrue(
-        solver.checkRowPlacement(puzzleStrings[0][0], "e", "4", "1")
       );
       assert.isFalse(
         solver.checkRowPlacement(puzzleStrings[0][0], "f", "1", "8")
@@ -48,22 +57,26 @@ suite("Unit Tests", () => {
       );
     });
 
-    test("checkColPlacement Method", () => {
+    test("checkColPlacement Method valid", () => {
       assert.isTrue(
         solver.checkColPlacement(puzzleStrings[0][0], "A", "2", "4")
       );
       assert.isTrue(
         solver.checkColPlacement(puzzleStrings[0][0], "A", "1", "1")
       );
+      assert.isTrue(
+        solver.checkColPlacement(puzzleStrings[0][0], "e", "4", "2")
+      );
+    });
+
+    test("checkColPlacement Method invalid", () => {
       assert.isFalse(
         solver.checkColPlacement(puzzleStrings[0][0], "c", "2", "8")
       );
       assert.isFalse(
         solver.checkColPlacement(puzzleStrings[0][0], "b", "2", "6")
       );
-      assert.isTrue(
-        solver.checkColPlacement(puzzleStrings[0][0], "e", "4", "2")
-      );
+
       assert.isFalse(
         solver.checkColPlacement(puzzleStrings[0][0], "f", "1", "5")
       );
@@ -72,21 +85,24 @@ suite("Unit Tests", () => {
       );
     });
 
-    test("checkRegionPlacement Method", () => {
+    test("checkRegionPlacement Method valid", () => {
       assert.isTrue(
         solver.checkRegionPlacement(puzzleStrings[0][0], "A", "2", "4")
       );
       assert.isTrue(
         solver.checkRegionPlacement(puzzleStrings[0][0], "A", "1", "1")
       );
+      assert.isTrue(
+        solver.checkRegionPlacement(puzzleStrings[0][0], "e", "4", "4")
+      );
+    });
+
+    test("checkRegionPlacement Method invalid", () => {
       assert.isFalse(
         solver.checkRegionPlacement(puzzleStrings[0][0], "c", "2", "8")
       );
       assert.isFalse(
         solver.checkRegionPlacement(puzzleStrings[0][0], "b", "2", "6")
-      );
-      assert.isTrue(
-        solver.checkRegionPlacement(puzzleStrings[0][0], "e", "4", "4")
       );
       assert.isFalse(
         solver.checkRegionPlacement(puzzleStrings[0][0], "f", "1", "5")
@@ -96,14 +112,19 @@ suite("Unit Tests", () => {
       );
     });
 
-    test("solve Method", () => {
+    test("solve Method valid", () => {
       assert.equal(solver.solve(puzzleStrings[0][0]), puzzleStrings[0][1]);
+    });
+
+    test("solve Method invalid", () => {
+      assert.equal(solver.solve(puzzleStrings[5][0]), puzzleStrings[5][1]);
+    });
+
+    test("solve Method solve", () => {
       assert.equal(solver.solve(puzzleStrings[1][0]), puzzleStrings[1][1]);
       assert.equal(solver.solve(puzzleStrings[2][0]), puzzleStrings[2][1]);
       assert.equal(solver.solve(puzzleStrings[3][0]), puzzleStrings[3][1]);
       assert.equal(solver.solve(puzzleStrings[4][0]), puzzleStrings[4][1]);
-
-      assert.equal(solver.solve(puzzleStrings[5][0]), puzzleStrings[5][1]);
     });
   });
 });
